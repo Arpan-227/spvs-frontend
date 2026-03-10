@@ -1,19 +1,17 @@
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import AppRoutes from './routes/AppRoutes'
 import Preloader from './components/common/Preloader'
 import { AuthProvider } from './context/AuthContext'
 import './index.css'
 
-const basename = import.meta.env.PROD ? '/spvs-frontend' : '/'
-
 function App() {
   return (
-    <BrowserRouter basename={basename}>
+    <HashRouter>
       <AuthProvider>
         <Preloader />
         <AppRoutes />
       </AuthProvider>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
