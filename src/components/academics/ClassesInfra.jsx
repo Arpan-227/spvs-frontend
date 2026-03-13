@@ -80,7 +80,7 @@ const CLASSES = [
   },
 ]
 
-export default function ClassesInfra() {
+export default function ClassesInfra({ embedded }) {
   const [active, setActive] = useState(0)
   const c = CLASSES[active]
 
@@ -92,77 +92,101 @@ export default function ClassesInfra() {
 
   return (
     <>
-      <div className="page-banner">
-        <div className="pb-inner">
-          <div className="pb-chip">🏫 Academics</div>
-          <h1 className="pb-title">Classes <span style={{color:'var(--gd2)',fontStyle:'italic'}}>Infrastructure</span></h1>
-          <p className="pb-sub">Class-wise facilities, student strength and infrastructure — Nursery to Class XII</p>
-          <div className="breadcrumb">
-            <Link to="/">Home</Link><span>›</span>
-            <Link to="/academics">Academics</Link><span>›</span>
-            <span className="bc-cur">Classes Infrastructure</span>
+      {!embedded && (
+        <div className="page-banner">
+          <div className="pb-inner">
+            <div className="pb-chip">🏫 Academics</div>
+            <h1 className="pb-title">Classes <span style={{color:'var(--gd2)',fontStyle:'italic'}}>Infrastructure</span></h1>
+            <p className="pb-sub">Class-wise facilities, student strength and infrastructure — Nursery to Class XII</p>
+            <div className="breadcrumb">
+              <Link to="/">Home</Link><span>›</span>
+              <Link to="/academics">Academics</Link><span>›</span>
+              <span className="bc-cur">Classes Infrastructure</span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      <div style={{background:'var(--bg)',minHeight:'60vh',padding:'60px 20px'}}>
-        <div style={{maxWidth:'1280px',margin:'0 auto'}}>
-          <div style={{display:'grid',gridTemplateColumns:'270px 1fr',gap:'28px',alignItems:'start'}}>
+      <div style={{background:'var(--bg)', minHeight:'60vh', padding: embedded ? '0' : '60px 20px'}}>
+        <div style={{maxWidth:'1280px', margin:'0 auto'}}>
 
-            {/* ── Sidebar ── */}
-            <div className="" style={{position:'sticky',top:'100px',display:'flex',flexDirection:'column',gap:'5px',background:'var(--card)',borderRadius:'20px',padding:'12px',border:'1.5px solid var(--brd)',boxShadow:'0 8px 30px rgba(232,118,26,.06)'}}>
-              <div style={{padding:'10px 12px',fontSize:'11px',fontWeight:'800',letterSpacing:'2px',textTransform:'uppercase',color:'var(--txt3)'}}>Select Class Level</div>
+          {/* ── Mobile: horizontal scrollable level picker ── */}
+          <div className="ci-mob-tabs" style={{display:'none', overflowX:'auto', gap:'8px', marginBottom:'18px', paddingBottom:'6px'}}>
+            {CLASSES.map((cl,i) => (
+              <button key={i} onClick={() => setActive(i)} style={{
+                flexShrink:0, display:'flex', alignItems:'center', gap:'7px',
+                padding:'9px 14px', borderRadius:'30px', border:'none', cursor:'pointer',
+                background: active===i ? `linear-gradient(135deg,${cl.color},${cl.color}bb)` : 'var(--bg2)',
+                color: active===i ? '#fff' : 'var(--txt2)',
+                fontSize:'12.5px', fontWeight:'700', fontFamily:"'DM Sans',sans-serif",
+                boxShadow: active===i ? `0 4px 14px ${cl.color}40` : 'none',
+                transition:'all .22s',
+              }}>
+                <span>{cl.em}</span>
+                <span>{cl.level}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* ── Desktop: sidebar + detail layout ── */}
+          <div className="ci-layout" style={{display:'grid', gridTemplateColumns:'270px 1fr', gap:'28px', alignItems:'start'}}>
+
+            {/* Sidebar (desktop only) */}
+            <div className="ci-sidebar" style={{position:'sticky', top:'100px', display:'flex', flexDirection:'column', gap:'5px', background:'var(--card)', borderRadius:'20px', padding:'12px', border:'1.5px solid var(--brd)', boxShadow:'0 8px 30px rgba(232,118,26,.06)'}}>
+              <div style={{padding:'10px 12px', fontSize:'11px', fontWeight:'800', letterSpacing:'2px', textTransform:'uppercase', color:'var(--txt3)'}}>Select Class Level</div>
               {CLASSES.map((cl,i) => (
                 <button key={i} onClick={() => setActive(i)} style={{
-                  display:'flex',alignItems:'center',gap:'11px',padding:'12px 14px',
-                  borderRadius:'12px',border:'none',cursor:'pointer',textAlign:'left',
+                  display:'flex', alignItems:'center', gap:'11px', padding:'12px 14px',
+                  borderRadius:'12px', border:'none', cursor:'pointer', textAlign:'left',
                   background: active===i ? `linear-gradient(135deg,${cl.color}18,${cl.color}06)` : 'transparent',
                   borderLeft: active===i ? `3px solid ${cl.color}` : '3px solid transparent',
                   boxShadow: active===i ? `0 4px 16px ${cl.color}18` : 'none',
-                  transition:'all .22s'
+                  transition:'all .22s',
                 }}>
                   <span style={{fontSize:'20px'}}>{cl.em}</span>
                   <div>
-                    <div style={{fontSize:'13px',fontWeight:'700',color:active===i ? cl.color : 'var(--txt)',fontFamily:"'Playfair Display',serif"}}>{cl.level}</div>
-                    <div style={{fontSize:'10.5px',color:'var(--txt3)'}}>{cl.tag}</div>
+                    <div style={{fontSize:'13px', fontWeight:'700', color: active===i ? cl.color : 'var(--txt)', fontFamily:"'Playfair Display',serif"}}>{cl.level}</div>
+                    <div style={{fontSize:'10.5px', color:'var(--txt3)'}}>{cl.tag}</div>
                   </div>
-                  <div style={{marginLeft:'auto',fontSize:'11px',fontWeight:'700',color:active===i ? cl.color : 'var(--txt3)'}}>{cl.students}</div>
+                  <div style={{marginLeft:'auto', fontSize:'11px', fontWeight:'700', color: active===i ? cl.color : 'var(--txt3)'}}>{cl.students}</div>
                 </button>
               ))}
             </div>
 
-            {/* ── Detail Panel ── */}
+            {/* Detail Panel */}
             <div key={active} style={{animation:'fU .35s ease both'}}>
 
               {/* Header card */}
-              <div style={{background:`linear-gradient(135deg,${c.color}12,${c.color}04)`,border:`1.5px solid ${c.color}28`,borderRadius:'22px',padding:'32px',marginBottom:'22px'}}>
-                <div style={{display:'flex',alignItems:'center',gap:'18px',marginBottom:'18px',flexWrap:'wrap'}}>
-                  <div style={{width:'64px',height:'64px',borderRadius:'18px',background:`linear-gradient(135deg,${c.color},${c.color}99)`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'28px',boxShadow:`0 8px 24px ${c.color}40`,flexShrink:0}}>{c.em}</div>
+              <div style={{background:`linear-gradient(135deg,${c.color}12,${c.color}04)`, border:`1.5px solid ${c.color}28`, borderRadius:'22px', padding:'24px', marginBottom:'18px'}}>
+                <div style={{display:'flex', alignItems:'center', gap:'14px', marginBottom:'16px', flexWrap:'wrap'}}>
+                  <div style={{width:'56px', height:'56px', borderRadius:'16px', background:`linear-gradient(135deg,${c.color},${c.color}99)`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'24px', boxShadow:`0 8px 24px ${c.color}40`, flexShrink:0}}>{c.em}</div>
                   <div style={{flex:1}}>
-                    <h2 style={{fontFamily:"'Playfair Display',serif",fontSize:'28px',fontWeight:'700',color:'var(--dark)',margin:'0 0 4px'}}>{c.level}</h2>
-                    <div style={{fontSize:'12px',fontWeight:'700',color:c.color,letterSpacing:'1px',textTransform:'uppercase'}}>{c.tag}</div>
+                    <h2 style={{fontFamily:"'Playfair Display',serif", fontSize:'22px', fontWeight:'700', color:'var(--dark)', margin:'0 0 4px'}}>{c.level}</h2>
+                    <div style={{fontSize:'11px', fontWeight:'700', color:c.color, letterSpacing:'1px', textTransform:'uppercase'}}>{c.tag}</div>
                   </div>
-                  <div style={{display:'flex',gap:'12px',flexWrap:'wrap'}}>
+                  <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
                     {[['👥',c.students+'+','Students'],['🏫',c.rooms,'Rooms'],['🔬',c.labs,'Labs']].map(([ic,n,l]) => (
-                      <div key={l} style={{background:'rgba(255,255,255,.7)',backdropFilter:'blur(8px)',borderRadius:'12px',padding:'12px 16px',textAlign:'center',border:`1px solid ${c.color}20`}}>
-                        <div style={{fontSize:'14px',marginBottom:'3px'}}>{ic}</div>
-                        <div style={{fontFamily:"'Playfair Display',serif",fontSize:'20px',fontWeight:'700',color:c.color,lineHeight:'1'}}>{n}</div>
-                        <div style={{fontSize:'10px',color:'var(--txt3)',marginTop:'2px'}}>{l}</div>
+                      <div key={l} style={{background:'rgba(255,255,255,.7)', backdropFilter:'blur(8px)', borderRadius:'12px', padding:'10px 14px', textAlign:'center', border:`1px solid ${c.color}20`}}>
+                        <div style={{fontSize:'13px', marginBottom:'2px'}}>{ic}</div>
+                        <div style={{fontFamily:"'Playfair Display',serif", fontSize:'18px', fontWeight:'700', color:c.color, lineHeight:'1'}}>{n}</div>
+                        <div style={{fontSize:'10px', color:'var(--txt3)', marginTop:'2px'}}>{l}</div>
                       </div>
                     ))}
                   </div>
                 </div>
-                <p style={{fontSize:'15px',color:'var(--txt2)',lineHeight:'1.75',margin:0}}>{c.desc}</p>
+                <p style={{fontSize:'14px', color:'var(--txt2)', lineHeight:'1.75', margin:0}}>{c.desc}</p>
               </div>
 
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'20px',marginBottom:'22px'}}>
+              {/* Infra + Strength — stack on mobile */}
+              <div className="ci-cards" style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'18px', marginBottom:'18px'}}>
+
                 {/* Infrastructure */}
-                <div style={{background:'var(--card)',borderRadius:'18px',padding:'24px',border:'1.5px solid var(--brd)'}}>
-                  <div style={{fontSize:'12px',fontWeight:'800',letterSpacing:'2px',textTransform:'uppercase',color:'var(--txt3)',marginBottom:'16px'}}>🏗️ Infrastructure Available</div>
-                  <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+                <div style={{background:'var(--card)', borderRadius:'18px', padding:'20px', border:'1.5px solid var(--brd)'}}>
+                  <div style={{fontSize:'11px', fontWeight:'800', letterSpacing:'2px', textTransform:'uppercase', color:'var(--txt3)', marginBottom:'14px'}}>🏗️ Infrastructure Available</div>
+                  <div style={{display:'flex', flexDirection:'column', gap:'7px'}}>
                     {c.infra.map((item,i) => (
-                      <div key={i} style={{display:'flex',alignItems:'center',gap:'10px',fontSize:'13.5px',color:'var(--txt2)',padding:'8px 12px',borderRadius:'10px',background:i%2===0?'var(--bg2)':'transparent'}}>
-                        <div style={{width:'7px',height:'7px',borderRadius:'50%',background:c.color,flexShrink:0,boxShadow:`0 0 6px ${c.color}80`}}></div>
+                      <div key={i} style={{display:'flex', alignItems:'center', gap:'10px', fontSize:'13px', color:'var(--txt2)', padding:'7px 10px', borderRadius:'10px', background:i%2===0?'var(--bg2)':'transparent'}}>
+                        <div style={{width:'7px', height:'7px', borderRadius:'50%', background:c.color, flexShrink:0, boxShadow:`0 0 6px ${c.color}80`}}></div>
                         {item}
                       </div>
                     ))}
@@ -170,62 +194,68 @@ export default function ClassesInfra() {
                 </div>
 
                 {/* Strength table */}
-                <div style={{background:'var(--card)',borderRadius:'18px',padding:'24px',border:'1.5px solid var(--brd)'}}>
-                  <div style={{fontSize:'12px',fontWeight:'800',letterSpacing:'2px',textTransform:'uppercase',color:'var(--txt3)',marginBottom:'16px'}}>👥 Student Strength 2025–26</div>
-                  <div style={{borderRadius:'12px',overflow:'hidden',border:'1.5px solid var(--brd)'}}>
-                    <table style={{width:'100%',borderCollapse:'collapse'}}>
+                <div style={{background:'var(--card)', borderRadius:'18px', padding:'20px', border:'1.5px solid var(--brd)'}}>
+                  <div style={{fontSize:'11px', fontWeight:'800', letterSpacing:'2px', textTransform:'uppercase', color:'var(--txt3)', marginBottom:'14px'}}>👥 Student Strength 2025–26</div>
+                  <div style={{borderRadius:'12px', overflow:'hidden', border:'1.5px solid var(--brd)'}}>
+                    <table style={{width:'100%', borderCollapse:'collapse'}}>
                       <thead>
                         <tr style={{background:`${c.color}15`}}>
                           {['Class','Boys','Girls','Total'].map(h=>(
-                            <th key={h} style={{padding:'10px 14px',textAlign:'left',fontSize:'11px',fontWeight:'800',color:c.color,letterSpacing:'1px',textTransform:'uppercase'}}>{h}</th>
+                            <th key={h} style={{padding:'9px 10px', textAlign:'left', fontSize:'10px', fontWeight:'800', color:c.color, letterSpacing:'1px', textTransform:'uppercase'}}>{h}</th>
                           ))}
                         </tr>
                       </thead>
                       <tbody>
                         {c.strength.map((row,i)=>(
-                          <tr key={i} style={{borderTop:'1px solid var(--brd)',background:i%2===0?'transparent':'rgba(0,0,0,.01)'}}>
-                            <td style={{padding:'10px 14px',fontWeight:'700',color:'var(--dark)',fontSize:'13px'}}>{row.cls}</td>
-                            <td style={{padding:'10px 14px',color:'var(--txt2)',fontSize:'13px'}}>{row.boys}</td>
-                            <td style={{padding:'10px 14px',color:'var(--txt2)',fontSize:'13px'}}>{row.girls}</td>
-                            <td style={{padding:'10px 14px',fontWeight:'800',color:c.color,fontSize:'14px'}}>{row.total}</td>
+                          <tr key={i} style={{borderTop:'1px solid var(--brd)', background:i%2===0?'transparent':'rgba(0,0,0,.01)'}}>
+                            <td style={{padding:'9px 10px', fontWeight:'700', color:'var(--dark)', fontSize:'12px'}}>{row.cls}</td>
+                            <td style={{padding:'9px 10px', color:'var(--txt2)', fontSize:'12px'}}>{row.boys}</td>
+                            <td style={{padding:'9px 10px', color:'var(--txt2)', fontSize:'12px'}}>{row.girls}</td>
+                            <td style={{padding:'9px 10px', fontWeight:'800', color:c.color, fontSize:'13px'}}>{row.total}</td>
                           </tr>
                         ))}
-                        <tr style={{borderTop:'2px solid var(--brd)',background:`${c.color}06`}}>
-                          <td style={{padding:'10px 14px',fontWeight:'800',color:'var(--dark)',fontSize:'13px'}}>Total</td>
-                          <td style={{padding:'10px 14px',fontWeight:'700',color:'var(--txt2)',fontSize:'13px'}}>{c.strength.reduce((s,r)=>s+r.boys,0)}</td>
-                          <td style={{padding:'10px 14px',fontWeight:'700',color:'var(--txt2)',fontSize:'13px'}}>{c.strength.reduce((s,r)=>s+r.girls,0)}</td>
-                          <td style={{padding:'10px 14px',fontWeight:'800',color:c.color,fontSize:'15px'}}>{c.strength.reduce((s,r)=>s+r.total,0)}</td>
+                        <tr style={{borderTop:'2px solid var(--brd)', background:`${c.color}06`}}>
+                          <td style={{padding:'9px 10px', fontWeight:'800', color:'var(--dark)', fontSize:'12px'}}>Total</td>
+                          <td style={{padding:'9px 10px', fontWeight:'700', color:'var(--txt2)', fontSize:'12px'}}>{c.strength.reduce((s,r)=>s+r.boys,0)}</td>
+                          <td style={{padding:'9px 10px', fontWeight:'700', color:'var(--txt2)', fontSize:'12px'}}>{c.strength.reduce((s,r)=>s+r.girls,0)}</td>
+                          <td style={{padding:'9px 10px', fontWeight:'800', color:c.color, fontSize:'14px'}}>{c.strength.reduce((s,r)=>s+r.total,0)}</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
-                  <div style={{marginTop:'16px',display:'flex',gap:'10px'}}>
-                    <div style={{flex:1,padding:'12px',borderRadius:'10px',background:`${c.color}08`,border:`1px solid ${c.color}20`,textAlign:'center'}}>
-                      <div style={{fontSize:'11px',color:'var(--txt3)',marginBottom:'3px'}}>Boys</div>
-                      <div style={{fontFamily:"'Playfair Display',serif",fontSize:'20px',fontWeight:'700',color:c.color}}>{c.strength.reduce((s,r)=>s+r.boys,0)}</div>
-                    </div>
-                    <div style={{flex:1,padding:'12px',borderRadius:'10px',background:'rgba(108,63,197,.06)',border:'1px solid rgba(108,63,197,.15)',textAlign:'center'}}>
-                      <div style={{fontSize:'11px',color:'var(--txt3)',marginBottom:'3px'}}>Girls</div>
-                      <div style={{fontFamily:"'Playfair Display',serif",fontSize:'20px',fontWeight:'700',color:'#6C3FC5'}}>{c.strength.reduce((s,r)=>s+r.girls,0)}</div>
-                    </div>
-                    <div style={{flex:1,padding:'12px',borderRadius:'10px',background:'rgba(34,163,90,.06)',border:'1px solid rgba(34,163,90,.2)',textAlign:'center'}}>
-                      <div style={{fontSize:'11px',color:'var(--txt3)',marginBottom:'3px'}}>Total</div>
-                      <div style={{fontFamily:"'Playfair Display',serif",fontSize:'20px',fontWeight:'700',color:'#22a35a'}}>{c.strength.reduce((s,r)=>s+r.total,0)}</div>
-                    </div>
+                  <div style={{marginTop:'14px', display:'flex', gap:'8px'}}>
+                    {[['Boys',c.strength.reduce((s,r)=>s+r.boys,0),'var(--or)',`${c.color}08`,`${c.color}20`],
+                      ['Girls',c.strength.reduce((s,r)=>s+r.girls,0),'#6C3FC5','rgba(108,63,197,.06)','rgba(108,63,197,.15)'],
+                      ['Total',c.strength.reduce((s,r)=>s+r.total,0),'#22a35a','rgba(34,163,90,.06)','rgba(34,163,90,.2)']
+                    ].map(([lbl,val,col,bg,br])=>(
+                      <div key={lbl} style={{flex:1, padding:'10px 6px', borderRadius:'10px', background:bg, border:`1px solid ${br}`, textAlign:'center'}}>
+                        <div style={{fontSize:'10px', color:'var(--txt3)', marginBottom:'3px'}}>{lbl}</div>
+                        <div style={{fontFamily:"'Playfair Display',serif", fontSize:'18px', fontWeight:'700', color:col}}>{val}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
 
-              {/* Nav to other sub-pages */}
-              <div style={{display:'flex',gap:'12px',flexWrap:'wrap'}}>
-                <Link to="/academics/subjects" className="btn-or" style={{fontSize:'13px',padding:'11px 20px'}}>📚 View Subjects →</Link>
-                <Link to="/academics/fees" className="btn-out" style={{fontSize:'13px',padding:'11px 20px'}}>💰 Fee Structure</Link>
-                <Link to="/academics/faculty" className="btn-out" style={{fontSize:'13px',padding:'11px 20px'}}>👨‍🏫 Meet Faculty</Link>
+              {/* Nav links */}
+              <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
+                <Link to="/academics/subjects" className="btn-or" style={{fontSize:'13px', padding:'10px 18px'}}>📚 View Subjects →</Link>
+                <Link to="/academics/fees" className="btn-out" style={{fontSize:'13px', padding:'10px 18px'}}>💰 Fee Structure</Link>
+                <Link to="/academics/faculty" className="btn-out" style={{fontSize:'13px', padding:'10px 18px'}}>👨‍🏫 Meet Faculty</Link>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .ci-layout { grid-template-columns: 1fr !important; }
+          .ci-sidebar { display: none !important; }
+          .ci-mob-tabs { display: flex !important; }
+          .ci-cards { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </>
   )
 }

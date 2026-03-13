@@ -63,17 +63,17 @@ function getInitials(name) {
 function Avatar({ f, st }) {
   if (f.photo) {
     return (
-      <div style={{width:'54px',height:'54px',borderRadius:'14px',overflow:'hidden',flexShrink:0,border:'2px solid '+st.dot+'44',boxShadow:'0 4px 14px '+st.dot+'33'}}>
+      <div style={{width:'50px',height:'50px',borderRadius:'14px',overflow:'hidden',flexShrink:0,border:'2px solid '+st.dot+'44',boxShadow:'0 4px 14px '+st.dot+'33'}}>
         <img src={f.photo} alt={f.name} style={{width:'100%',height:'100%',objectFit:'cover'}} />
       </div>
     )
   }
   return (
     <div style={{
-      width:'54px', height:'54px', borderRadius:'14px', flexShrink:0,
+      width:'50px', height:'50px', borderRadius:'14px', flexShrink:0,
       background: st.grad,
       display:'flex', alignItems:'center', justifyContent:'center',
-      fontFamily:"'DM Sans',sans-serif", fontSize:'17px',
+      fontFamily:"'DM Sans',sans-serif", fontSize:'16px',
       fontWeight:'900', color:'#fff', letterSpacing:'1px',
       boxShadow:'0 4px 14px '+st.dot+'44',
     }}>
@@ -83,55 +83,30 @@ function Avatar({ f, st }) {
 }
 
 function FacultyCard({ f, st }) {
-  function onEnter(e) {
-    e.currentTarget.style.transform = 'translateY(-5px)'
-    e.currentTarget.style.boxShadow = '0 14px 36px ' + st.dot + '33'
-    e.currentTarget.style.borderColor = st.dot + '55'
-  }
-  function onLeave(e) {
-    e.currentTarget.style.transform = 'translateY(0)'
-    e.currentTarget.style.boxShadow = 'none'
-    e.currentTarget.style.borderColor = 'var(--brd)'
-  }
   return (
-    <div
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
-      style={{
-        display:'flex', alignItems:'center', gap:'14px',
-        padding:'18px 20px', borderRadius:'16px',
-        background:'var(--card)', border:'1.5px solid var(--brd)',
-        transition:'all .35s cubic-bezier(.34,1.56,.64,1)', cursor:'default',
-      }}
-    >
+    <div style={{
+      display:'flex', alignItems:'center', gap:'12px',
+      padding:'16px 18px', borderRadius:'16px',
+      background:'var(--card)', border:'1.5px solid var(--brd)',
+    }}>
       <Avatar f={f} st={st} />
       <div style={{flex:1, minWidth:0}}>
-        <div style={{fontFamily:"'Playfair Display',serif", fontSize:'14.5px', fontWeight:'700', color:'var(--dark)', marginBottom:'5px', lineHeight:'1.3'}}>
-          {f.name}
-        </div>
-        <div style={{display:'inline-flex', alignItems:'center', fontSize:'10px', fontWeight:'800', color:st.color, background:st.bg, padding:'2px 10px', borderRadius:'50px', marginBottom:'7px'}}>
-          {f.desig}
-        </div>
-        <div style={{fontSize:'12px', color:'var(--txt2)', marginBottom:'3px'}}>
-          <span style={{color:'var(--txt3)'}}>Subject: </span>{f.subject}
-        </div>
-        <div style={{fontSize:'11.5px', color:'var(--txt3)', fontStyle:'italic'}}>
-          {f.qual}
-        </div>
+        <div style={{fontFamily:"'Playfair Display',serif", fontSize:'14px', fontWeight:'700', color:'var(--dark)', marginBottom:'4px', lineHeight:'1.3'}}>{f.name}</div>
+        <div style={{display:'inline-flex', alignItems:'center', fontSize:'10px', fontWeight:'800', color:st.color, background:st.bg, padding:'2px 9px', borderRadius:'50px', marginBottom:'6px'}}>{f.desig}</div>
+        <div style={{fontSize:'12px', color:'var(--txt2)', marginBottom:'2px'}}><span style={{color:'var(--txt3)'}}>Subject: </span>{f.subject}</div>
+        <div style={{fontSize:'11px', color:'var(--txt3)', fontStyle:'italic'}}>{f.qual}</div>
         {f.phone && (
-          <a href={'tel:'+f.phone} style={{display:'inline-block', fontSize:'11.5px', color:'var(--or)', marginTop:'6px', fontWeight:'700', textDecoration:'none'}}>
-            📞 {f.phone}
-          </a>
+          <a href={'tel:'+f.phone} style={{display:'inline-block', fontSize:'11px', color:'var(--or)', marginTop:'5px', fontWeight:'700', textDecoration:'none'}}>📞 {f.phone}</a>
         )}
       </div>
     </div>
   )
 }
 
-export default function TeachersQualification({ embedded = false }) {
+export default function TeachersQualification({ embedded }) {
   const [filter, setFilter] = useState('All')
-  const [search, setSearch]   = useState('')
-  const [view,   setView]     = useState('grid')
+  const [search, setSearch] = useState('')
+  const [view,   setView]   = useState('grid')
 
   const cats = ['All', 'Management', 'PGT', 'TGT']
 
@@ -163,7 +138,7 @@ export default function TeachersQualification({ embedded = false }) {
         <div style={{maxWidth:'1280px', margin:'0 auto'}}>
 
           {/* Stats */}
-          <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(150px,1fr))', gap:'14px', marginBottom:'36px'}}>
+          <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(120px,1fr))', gap:'12px', marginBottom:'28px'}}>
             {[
               ['64+','Total Staff',  '👥','#E8761A'],
               ['14', 'PGTs',         '🎓','#6C3FC5'],
@@ -173,69 +148,64 @@ export default function TeachersQualification({ embedded = false }) {
             ].map(function(item) {
               var n=item[0], l=item[1], ic=item[2], clr=item[3]
               return (
-                <div key={l} style={{padding:'20px', borderRadius:'16px', background:'var(--card)', textAlign:'center', border:'1.5px solid var(--brd)', boxShadow:'0 4px 20px rgba(0,0,0,.04)'}}>
-                  <div style={{width:'46px',height:'46px',borderRadius:'14px',background:clr+'18',border:'1.5px solid '+clr+'30',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',margin:'0 auto 12px'}}>
-                    {ic}
-                  </div>
-                  <div style={{fontFamily:"'Playfair Display',serif", fontSize:'26px', fontWeight:'700', color:clr, lineHeight:'1'}}>{n}</div>
-                  <div style={{fontSize:'11px', color:'var(--txt3)', marginTop:'5px', letterSpacing:'.8px', textTransform:'uppercase'}}>{l}</div>
+                <div key={l} style={{padding:'16px 10px', borderRadius:'14px', background:'var(--card)', textAlign:'center', border:'1.5px solid var(--brd)'}}>
+                  <div style={{width:'40px',height:'40px',borderRadius:'12px',background:clr+'18',border:'1.5px solid '+clr+'30',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'20px',margin:'0 auto 10px'}}>{ic}</div>
+                  <div style={{fontFamily:"'Playfair Display',serif", fontSize:'22px', fontWeight:'700', color:clr, lineHeight:'1'}}>{n}</div>
+                  <div style={{fontSize:'10px', color:'var(--txt3)', marginTop:'4px', letterSpacing:'.8px', textTransform:'uppercase'}}>{l}</div>
                 </div>
               )
             })}
           </div>
 
-          {/* Controls */}
-          <div style={{display:'flex', gap:'12px', flexWrap:'wrap', marginBottom:'28px', alignItems:'center'}}>
+          {/* Controls — search full width on mobile, filters + toggle below */}
+          <div style={{marginBottom:'24px'}}>
             <input
               value={search}
               onChange={function(e) { setSearch(e.target.value) }}
               placeholder="🔍 Search name, subject or qualification..."
-              style={{flex:1, minWidth:'220px', padding:'11px 16px', borderRadius:'10px', border:'1.5px solid var(--brd)', background:'var(--bg)', color:'var(--txt)', fontFamily:"'DM Sans',sans-serif", fontSize:'13.5px', outline:'none', transition:'border-color .2s'}}
+              style={{width:'100%', boxSizing:'border-box', padding:'11px 16px', borderRadius:'10px', border:'1.5px solid var(--brd)', background:'var(--bg)', color:'var(--txt)', fontFamily:"'DM Sans',sans-serif", fontSize:'13.5px', outline:'none', marginBottom:'10px'}}
               onFocus={function(e) { e.target.style.borderColor='var(--or)' }}
               onBlur={function(e)  { e.target.style.borderColor='var(--brd)' }}
             />
-
-            {/* Category filters */}
-            <div style={{display:'flex', gap:'6px', flexWrap:'wrap'}}>
-              {cats.map(function(c) {
-                var isActive = filter === c
-                return (
-                  <button key={c} onClick={function() { setFilter(c) }} style={{
-                    padding:'9px 18px', borderRadius:'50px', border:'none', cursor:'pointer',
-                    fontFamily:"'DM Sans',sans-serif", fontSize:'12.5px', fontWeight:'700',
-                    transition:'all .2s',
-                    background: isActive ? 'var(--or)' : 'var(--bg2)',
-                    color:      isActive ? '#fff'      : 'var(--txt2)',
-                    boxShadow:  isActive ? '0 4px 14px rgba(232,118,26,.3)' : 'none',
-                  }}>
-                    {c}{isActive ? ' (' + filtered.length + ')' : ''}
-                  </button>
-                )
-              })}
-            </div>
-
-            {/* Grid / List toggle */}
-            <div style={{display:'flex', gap:'4px', background:'var(--bg2)', padding:'4px', borderRadius:'10px', border:'1.5px solid var(--brd)'}}>
-              {[['grid','⊞'], ['list','☰']].map(function(pair) {
-                var v=pair[0], ic=pair[1]
-                return (
-                  <button key={v} onClick={function() { setView(v) }} style={{
-                    padding:'7px 13px', borderRadius:'8px', border:'none', cursor:'pointer',
-                    fontFamily:"'DM Sans',sans-serif", fontSize:'14px', transition:'all .2s',
-                    background: view===v ? 'var(--card)' : 'transparent',
-                    color:      view===v ? 'var(--or)'   : 'var(--txt3)',
-                    boxShadow:  view===v ? '0 2px 8px rgba(232,118,26,.15)' : 'none',
-                  }}>
-                    {ic}
-                  </button>
-                )
-              })}
+            <div style={{display:'flex', gap:'8px', alignItems:'center', flexWrap:'wrap'}}>
+              {/* Category filters */}
+              <div style={{display:'flex', gap:'5px', flexWrap:'wrap', flex:1}}>
+                {cats.map(function(c) {
+                  var isActive = filter === c
+                  return (
+                    <button key={c} onClick={function() { setFilter(c) }} style={{
+                      padding:'8px 14px', borderRadius:'50px', border:'none', cursor:'pointer',
+                      fontFamily:"'DM Sans',sans-serif", fontSize:'12px', fontWeight:'700',
+                      background: isActive ? 'var(--or)' : 'var(--bg2)',
+                      color:      isActive ? '#fff'      : 'var(--txt2)',
+                      boxShadow:  isActive ? '0 4px 14px rgba(232,118,26,.3)' : 'none',
+                    }}>
+                      {c}{isActive && filter !== 'All' ? ' ('+filtered.length+')' : isActive ? ' ('+filtered.length+')' : ''}
+                    </button>
+                  )
+                })}
+              </div>
+              {/* Grid / List toggle */}
+              <div style={{display:'flex', gap:'4px', background:'var(--bg2)', padding:'4px', borderRadius:'10px', border:'1.5px solid var(--brd)', flexShrink:0}}>
+                {[['grid','⊞'], ['list','☰']].map(function(pair) {
+                  var v=pair[0], ic=pair[1]
+                  return (
+                    <button key={v} onClick={function() { setView(v) }} style={{
+                      padding:'7px 12px', borderRadius:'8px', border:'none', cursor:'pointer',
+                      fontSize:'14px', transition:'all .2s',
+                      background: view===v ? 'var(--card)' : 'transparent',
+                      color:      view===v ? 'var(--or)'   : 'var(--txt3)',
+                      boxShadow:  view===v ? '0 2px 8px rgba(232,118,26,.15)' : 'none',
+                    }}>{ic}</button>
+                  )
+                })}
+              </div>
             </div>
           </div>
 
           {/* GRID VIEW */}
           {view === 'grid' && (
-            <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(270px,1fr))', gap:'14px'}}>
+            <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))', gap:'12px'}}>
               {filtered.map(function(f, i) {
                 var st = CAT_STYLE[f.cat] || CAT_STYLE.PRT
                 return <FacultyCard key={i} f={f} st={st} />
@@ -243,45 +213,47 @@ export default function TeachersQualification({ embedded = false }) {
             </div>
           )}
 
-          {/* LIST VIEW */}
+          {/* LIST VIEW — scrollable on mobile */}
           {view === 'list' && (
             <div style={{borderRadius:'18px', overflow:'hidden', border:'1.5px solid var(--brd)', boxShadow:'0 6px 28px rgba(232,118,26,.06)'}}>
-              <table style={{width:'100%', borderCollapse:'collapse'}}>
-                <thead>
-                  <tr style={{background:'linear-gradient(135deg,var(--dark),var(--dark2))'}}>
-                    {['#','Name','Designation','Qualification','Subject'].map(function(h) {
-                      return <th key={h} style={{padding:'13px 16px', textAlign:'left', fontSize:'11px', fontWeight:'800', color:'rgba(255,255,255,.6)', letterSpacing:'1px', textTransform:'uppercase'}}>{h}</th>
+              <div style={{overflowX:'auto', WebkitOverflowScrolling:'touch'}}>
+                <table style={{width:'100%', borderCollapse:'collapse', minWidth:'560px'}}>
+                  <thead>
+                    <tr style={{background:'linear-gradient(135deg,var(--dark),var(--dark2))'}}>
+                      {['#','Name','Designation','Qualification','Subject'].map(function(h) {
+                        return <th key={h} style={{padding:'12px 14px', textAlign:'left', fontSize:'10px', fontWeight:'800', color:'rgba(255,255,255,.6)', letterSpacing:'1px', textTransform:'uppercase', whiteSpace:'nowrap'}}>{h}</th>
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map(function(f, i) {
+                      var st = CAT_STYLE[f.cat] || CAT_STYLE.PRT
+                      return (
+                        <tr key={i}
+                          style={{borderTop:'1px solid var(--brd)', background: i%2===0 ? 'transparent' : 'rgba(0,0,0,.012)'}}
+                          onMouseEnter={function(e) { e.currentTarget.style.background='rgba(232,118,26,.03)' }}
+                          onMouseLeave={function(e) { e.currentTarget.style.background= i%2===0 ? 'transparent' : 'rgba(0,0,0,.012)' }}
+                        >
+                          <td style={{padding:'10px 14px', fontSize:'11px', color:'var(--txt3)', fontWeight:'600'}}>{i+1}</td>
+                          <td style={{padding:'10px 14px', fontWeight:'700', color:'var(--dark)', fontSize:'13px', fontFamily:"'Playfair Display',serif", whiteSpace:'nowrap'}}>{f.name}</td>
+                          <td style={{padding:'10px 14px', whiteSpace:'nowrap'}}>
+                            <span style={{fontSize:'10px', fontWeight:'800', color:st.color, background:st.bg, padding:'2px 9px', borderRadius:'50px'}}>{f.desig}</span>
+                          </td>
+                          <td style={{padding:'10px 14px', fontSize:'12.5px', color:'var(--txt2)', fontStyle:'italic', whiteSpace:'nowrap'}}>{f.qual}</td>
+                          <td style={{padding:'10px 14px', fontSize:'12.5px', color:'var(--txt2)'}}>{f.subject}</td>
+                        </tr>
+                      )
                     })}
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.map(function(f, i) {
-                    var st = CAT_STYLE[f.cat] || CAT_STYLE.PRT
-                    return (
-                      <tr key={i}
-                        style={{borderTop:'1px solid var(--brd)', background: i%2===0 ? 'transparent' : 'rgba(0,0,0,.012)', transition:'background .15s'}}
-                        onMouseEnter={function(e) { e.currentTarget.style.background='rgba(232,118,26,.03)' }}
-                        onMouseLeave={function(e) { e.currentTarget.style.background= i%2===0 ? 'transparent' : 'rgba(0,0,0,.012)' }}
-                      >
-                        <td style={{padding:'11px 16px', fontSize:'12px', color:'var(--txt3)', fontWeight:'600'}}>{i+1}</td>
-                        <td style={{padding:'11px 16px', fontWeight:'700', color:'var(--dark)', fontSize:'13.5px', fontFamily:"'Playfair Display',serif"}}>{f.name}</td>
-                        <td style={{padding:'11px 16px'}}>
-                          <span style={{fontSize:'11px', fontWeight:'800', color:st.color, background:st.bg, padding:'3px 10px', borderRadius:'50px'}}>{f.desig}</span>
-                        </td>
-                        <td style={{padding:'11px 16px', fontSize:'13px', color:'var(--txt2)', fontStyle:'italic'}}>{f.qual}</td>
-                        <td style={{padding:'11px 16px', fontSize:'13px', color:'var(--txt2)'}}>{f.subject}</td>
-                      </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
           {filtered.length === 0 && (
             <div style={{textAlign:'center', padding:'60px', color:'var(--txt3)'}}>
-              <div style={{fontSize:'48px', marginBottom:'14px'}}>🔍</div>
-              <div style={{fontSize:'18px', fontWeight:'600', color:'var(--txt2)'}}>No results for "{search}"</div>
+              <div style={{fontSize:'40px', marginBottom:'12px'}}>🔍</div>
+              <div style={{fontSize:'16px', fontWeight:'600', color:'var(--txt2)'}}>No results for "{search}"</div>
             </div>
           )}
 

@@ -52,11 +52,11 @@ const STREAMS = [
 ]
 
 const LEVELS = [
-  { em:'🌱', lbl:'Pre-Primary',  tag:'PG – UKG',   students:'160+' },
-  { em:'📖', lbl:'Primary',      tag:'Class I – V', students:'376+' },
-  { em:'📐', lbl:'Middle',       tag:'Class VI – VIII', students:'285+' },
-  { em:'🔬', lbl:'Secondary',    tag:'Class IX – X', students:'315+' },
-  { em:'🎓', lbl:'Sr. Secondary',tag:'Class XI – XII', students:'274+' },
+  { em:'🌱', lbl:'Pre-Primary',   tag:'PG – UKG',        students:'160+' },
+  { em:'📖', lbl:'Primary',       tag:'Class I – V',      students:'376+' },
+  { em:'📐', lbl:'Middle',        tag:'Class VI – VIII',  students:'285+' },
+  { em:'🔬', lbl:'Secondary',     tag:'Class IX – X',     students:'315+' },
+  { em:'🎓', lbl:'Sr. Secondary', tag:'Class XI – XII',   students:'274+' },
 ]
 
 export default function CurriculumSection() {
@@ -82,15 +82,9 @@ export default function CurriculumSection() {
         </div>
 
         {/* Level pills */}
-        <div className="rv" style={{display:'flex',gap:'12px',flexWrap:'wrap',justifyContent:'center',marginBottom:'52px'}}>
+        <div className="rv curr-levels">
           {LEVELS.map((l,i) => (
-            <div key={i} className="rv3d" style={{
-              transitionDelay:`${i*0.08}s`,
-              background:'var(--card)',border:'1.5px solid var(--brd)',
-              borderRadius:'14px',padding:'16px 20px',textAlign:'center',
-              boxShadow:'0 4px 18px rgba(232,118,26,.07)',minWidth:'110px',cursor:'default',
-              transition:'all .35s cubic-bezier(.34,1.56,.64,1)'
-            }}
+            <div key={i} className="rv3d curr-level-pill" style={{transitionDelay:`${i*0.08}s`}}
               onMouseEnter={e=>{e.currentTarget.style.borderColor='var(--or)';e.currentTarget.style.transform='translateY(-6px)';e.currentTarget.style.boxShadow='0 14px 36px var(--shd)'}}
               onMouseLeave={e=>{e.currentTarget.style.borderColor='var(--brd)';e.currentTarget.style.transform='translateY(0)';e.currentTarget.style.boxShadow='0 4px 18px rgba(232,118,26,.07)'}}
             >
@@ -102,17 +96,20 @@ export default function CurriculumSection() {
           ))}
         </div>
 
-        {/* Senior Secondary Streams */}
-        <div className="rv" style={{textAlign:'center',marginBottom:'28px'}}>
-          <div style={{fontSize:'13px',fontWeight:'700',letterSpacing:'2px',textTransform:'uppercase',color:'var(--txt3)'}}>Senior Secondary Streams (Class XI–XII)</div>
+        {/* Streams label */}
+        <div className="rv" style={{textAlign:'center',marginBottom:'28px',marginTop:'52px'}}>
+          <div style={{fontSize:'13px',fontWeight:'700',letterSpacing:'2px',textTransform:'uppercase',color:'var(--txt3)'}}>
+            Senior Secondary Streams (Class XI–XII)
+          </div>
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:'20px',marginBottom:'40px'}}>
+
+        {/* Streams grid */}
+        <div className="curr-streams">
           {STREAMS.map((s,i) => (
-            <div key={i} className="rv3d" style={{
+            <div key={i} className="rv3d curr-stream-card" style={{
               transitionDelay:`${i*0.12}s`,
-              background:s.bg,border:`1.5px solid ${s.color}22`,
-              borderRadius:'20px',padding:'28px 24px',
-              transition:'all .4s cubic-bezier(.34,1.56,.64,1)',cursor:'default'
+              background: s.bg,
+              border: `1.5px solid ${s.color}22`,
             }}
               onMouseEnter={e=>{e.currentTarget.style.transform='translateY(-8px) rotateX(3deg)';e.currentTarget.style.boxShadow=`0 20px 50px ${s.color}25`}}
               onMouseLeave={e=>{e.currentTarget.style.transform='translateY(0) rotateX(0)';e.currentTarget.style.boxShadow='none'}}
@@ -133,12 +130,87 @@ export default function CurriculumSection() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="rv" style={{textAlign:'center'}}>
-          <Link to="/academics" className="btn-or" style={{marginRight:'14px'}}>📚 View Full Curriculum →</Link>
+        {/* CTA Buttons — fully fixed for mobile */}
+        <div className="rv curr-cta">
+          <Link to="/academics" className="btn-or">📚 View Full Curriculum →</Link>
           <Link to="/academics/fees" className="btn-out">📋 Fee Structure</Link>
         </div>
+
       </div>
+
+      <style>{`
+        .curr-levels {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .curr-level-pill {
+          background: var(--card);
+          border: 1.5px solid var(--brd);
+          border-radius: 14px;
+          padding: 16px 20px;
+          text-align: center;
+          min-width: 110px;
+          cursor: default;
+          box-shadow: 0 4px 18px rgba(232,118,26,.07);
+          transition: all .35s cubic-bezier(.34,1.56,.64,1);
+        }
+        .curr-streams {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          gap: 20px;
+          margin-bottom: 40px;
+        }
+        .curr-stream-card {
+          border-radius: 20px;
+          padding: 28px 24px;
+          transition: all .4s cubic-bezier(.34,1.56,.64,1);
+          cursor: default;
+        }
+        .curr-cta {
+          display: flex;
+          gap: 14px;
+          justify-content: center;
+          flex-wrap: wrap;
+          margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+          .curr-levels { gap: 8px; }
+          .curr-level-pill {
+            min-width: calc(50% - 8px);
+            flex: 1 1 calc(50% - 8px);
+            padding: 12px 10px;
+          }
+          .curr-level-pill div:first-child { font-size: 22px !important; margin-bottom: 4px !important; }
+          .curr-streams {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+          .curr-stream-card { padding: 20px 16px; }
+          .curr-cta {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+            margin-top: 4px;
+          }
+          .curr-cta a {
+            width: 100% !important;
+            justify-content: center !important;
+            text-align: center;
+            margin-right: 0 !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .curr-level-pill {
+            min-width: calc(50% - 6px);
+            padding: 10px 8px;
+          }
+          .curr-level-pill div:first-child { font-size: 20px !important; }
+        }
+      `}</style>
     </section>
   )
 }

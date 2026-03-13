@@ -4,7 +4,6 @@ import BlogList from '../../components/blog/BlogList'
 export default function BlogPage() {
   return (
     <>
-      {/* PAGE BANNER */}
       <div className="page-banner">
         <div className="pb-inner">
           <div className="pb-chip">📰 Blog & Updates</div>
@@ -18,21 +17,21 @@ export default function BlogPage() {
       </div>
 
       {/* STATS BAR */}
-      <div style={{background:'linear-gradient(90deg,var(--or),var(--or3),var(--gd))', padding:'18px 0'}}>
-        <div style={{maxWidth:'1280px', margin:'0 auto', padding:'0 20px', display:'flex', justifyContent:'space-around', flexWrap:'wrap', gap:'16px'}}>
-          {[['8+','Posts Published','📝'],['6','Categories','🏷️'],['2026','Latest Year','📅'],['100%','Board Results','🏆']].map(function(s) {
+      <div style={{background:'linear-gradient(90deg,var(--or),var(--or3),var(--gd))', padding:'16px 0'}}>
+        <div style={{maxWidth:'1280px', margin:'0 auto', padding:'0 16px', display:'flex', justifyContent:'space-around', flexWrap:'wrap', gap:'10px'}}>
+          {[['8+','Posts','📝'],['6','Categories','🏷️'],['2026','Latest Year','📅'],['100%','Results','🏆']].map(function(s) {
             return (
-              <div key={s[1]} style={{textAlign:'center', color:'#fff'}}>
-                <div style={{fontSize:'16px', marginBottom:'2px'}}>{s[2]}</div>
-                <div style={{fontFamily:"'Playfair Display',serif", fontSize:'20px', fontWeight:'700', lineHeight:'1'}}>{s[0]}</div>
-                <div style={{fontSize:'11px', fontWeight:'700', opacity:'.8', letterSpacing:'1px', textTransform:'uppercase', marginTop:'3px'}}>{s[1]}</div>
+              <div key={s[1]} style={{textAlign:'center', color:'#fff', minWidth:'52px'}}>
+                <div style={{fontSize:'14px', marginBottom:'2px'}}>{s[2]}</div>
+                <div style={{fontFamily:"'Playfair Display',serif", fontSize:'18px', fontWeight:'700', lineHeight:'1'}}>{s[0]}</div>
+                <div style={{fontSize:'9px', fontWeight:'700', opacity:'.8', letterSpacing:'1px', textTransform:'uppercase', marginTop:'3px'}}>{s[1]}</div>
               </div>
             )
           })}
         </div>
       </div>
 
-      <div style={{background:'var(--bg)', padding:'60px 20px', minHeight:'60vh'}}>
+      <div style={{background:'var(--bg)', padding:'40px 16px', minHeight:'60vh'}}>
         <div style={{maxWidth:'1200px', margin:'0 auto'}}>
           <BlogList />
         </div>

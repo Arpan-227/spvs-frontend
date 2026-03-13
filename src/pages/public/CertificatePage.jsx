@@ -2,12 +2,10 @@ import { useState, useRef, useEffect } from 'react'
 
 /* ─── Certificate types ─────────────────────────── */
 var CERTS = [
-  { id:'slc',       label:'SLC',                  full:'School Leaving Certificate', icon:'🎓', color:'#E8761A' },
-  { id:'tc',        label:'TC',                   full:'Transfer Certificate',        icon:'📋', color:'#22a35a' },
-  { id:'migration', label:'Migration Certificate', full:'Migration Certificate',       icon:'📄', color:'#1a6bbf' },
-  { id:'syllabus',  label:'Syllabus',              full:'Syllabus',                    icon:'📚', color:'#6C3FC5' },
-  { id:'results',   label:'Results',               full:'Results / Marksheet',         icon:'🏆', color:'#C45F0A' },
-  { id:'holidays',  label:'Holidays List',         full:'Annual Holidays List',        icon:'📅', color:'#B87832' },
+  { id:'slc',       label:'SLC',       full:'School Leaving Certificate', icon:'🎓', color:'#E8761A' },
+  { id:'tc',        label:'TC',        full:'Transfer Certificate',        icon:'📋', color:'#22a35a' },
+  { id:'migration', label:'Migration', full:'Migration Certificate',       icon:'📄', color:'#1a6bbf' },
+  { id:'results',   label:'Marksheet', full:'Results / Marksheet',         icon:'🏆', color:'#C45F0A' },
 ]
 
 var MONTHS  = ['January','February','March','April','May','June','July','August','September','October','November','December']
@@ -284,7 +282,7 @@ function ResultScreen({ certId, regNo, dob, onBack }) {
           {/* Buttons */}
           <div style={{ display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap' }}>
             <button onClick={downloadCert}
-              style={{ display:'inline-flex', alignItems:'center', gap:'9px', padding:'14px 32px', borderRadius:'14px', background:'linear-gradient(135deg,#E8761A,#F5B800)', color:'#1C0A00', fontWeight:'900', fontSize:'15px', border:'none', cursor:'pointer', boxShadow:'0 8px 28px rgba(232,118,26,.32)', fontFamily:"'DM Sans',sans-serif", transition:'all .22s' }}
+              style={{ display:'inline-flex', alignItems:'center', gap:'9px', padding:'14px 28px', borderRadius:'14px', background:'linear-gradient(135deg,#E8761A,#F5B800)', color:'#1C0A00', fontWeight:'900', fontSize:'clamp(13px,3vw,15px)', border:'none', cursor:'pointer', boxShadow:'0 8px 28px rgba(232,118,26,.32)', fontFamily:"'DM Sans',sans-serif", transition:'all .22s' }}
               onMouseEnter={function (e) { e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='0 14px 36px rgba(232,118,26,.44)' }}
               onMouseLeave={function (e) { e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='0 8px 28px rgba(232,118,26,.32)' }}>
               ⬇&nbsp; Download Certificate
@@ -389,6 +387,12 @@ export default function CertificatePage() {
         @keyframes calDrop { from { opacity:0; transform:translateY(-10px) scale(.97) } to { opacity:1; transform:none } }
         @keyframes heroFadeUp { from { opacity:0; transform:translateY(22px) } to { opacity:1; transform:none } }
         @keyframes badgePop   { from { opacity:0; transform:scale(.85) } to { opacity:1; transform:scale(1) } }
+        .cert-btn-short { display: none; }
+        .cert-btn-full  { display: inline; }
+        @media (max-width: 400px) {
+          .cert-btn-full  { display: none; }
+          .cert-btn-short { display: inline; }
+        }
       `}</style>
 
       <div style={{ fontFamily:"'DM Sans',sans-serif", minHeight:'100vh', background:'#FFFDF8' }}>
@@ -530,11 +534,12 @@ export default function CertificatePage() {
 
                 {/* Submit */}
                 <button onClick={handleSubmit}
-                  style={{ width:'100%', padding:'17px', borderRadius:'16px', background:'linear-gradient(135deg,#E8761A,#F5B800)', color:'#1C0A00', fontFamily:"'DM Sans',sans-serif", fontSize:'16px', fontWeight:'900', border:'none', cursor:'pointer', boxShadow:'0 10px 32px rgba(232,118,26,.32)', transition:'all .25s', display:'flex', alignItems:'center', justifyContent:'center', gap:'10px', letterSpacing:'.3px' }}
+                  style={{ width:'100%', padding:'17px', borderRadius:'16px', background:'linear-gradient(135deg,#E8761A,#F5B800)', color:'#1C0A00', fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,3vw,16px)', fontWeight:'900', border:'none', cursor:'pointer', boxShadow:'0 10px 32px rgba(232,118,26,.32)', transition:'all .25s', display:'flex', alignItems:'center', justifyContent:'center', gap:'10px', letterSpacing:'.3px' }}
                   onMouseEnter={function (e) { e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.boxShadow='0 16px 40px rgba(232,118,26,.44)' }}
                   onMouseLeave={function (e) { e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='0 10px 32px rgba(232,118,26,.32)' }}>
                   <span style={{ fontSize:'20px' }}>🔍</span>
-                  Verify &amp; View Certificate
+                  <span className="cert-btn-full">Verify &amp; View Certificate</span>
+                  <span className="cert-btn-short">Verify & View Certificate</span>
                 </button>
 
               </div>

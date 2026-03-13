@@ -28,7 +28,6 @@ export default function AcademicsPage() {
 
   return (
     <>
-      {/* PAGE BANNER */}
       <div className="page-banner">
         <div className="pb-inner">
           <div className="pb-chip">📚 Academics</div>
@@ -45,12 +44,12 @@ export default function AcademicsPage() {
       </div>
 
       {/* STATS BAR */}
-      <div style={{background:'linear-gradient(90deg,var(--or),var(--or3),var(--gd))', padding:'20px 0'}}>
-        <div style={{maxWidth:'1280px', margin:'0 auto', padding:'0 20px', display:'flex', justifyContent:'space-around', flexWrap:'wrap', gap:'16px'}}>
-          {[['1410+','Students'],['64+','Teachers'],['PG–XII','Classes'],['100%','Board Results'],['8','Laboratories']].map(([n,l]) => (
-            <div key={l} style={{textAlign:'center', color:'#fff'}}>
-              <div style={{fontFamily:"'Playfair Display',serif", fontSize:'24px', fontWeight:'700', lineHeight:'1'}}>{n}</div>
-              <div style={{fontSize:'11px', fontWeight:'700', opacity:'.8', letterSpacing:'1px', textTransform:'uppercase', marginTop:'3px'}}>{l}</div>
+      <div style={{background:'linear-gradient(90deg,var(--or),var(--or3),var(--gd))', padding:'16px 0'}}>
+        <div style={{maxWidth:'1280px', margin:'0 auto', padding:'0 16px', display:'flex', justifyContent:'space-around', flexWrap:'wrap', gap:'10px'}}>
+          {[['1410+','Students'],['64+','Teachers'],['PG–XII','Classes'],['100%','Results'],['8','Labs']].map(([n,l]) => (
+            <div key={l} style={{textAlign:'center', color:'#fff', minWidth:'54px'}}>
+              <div style={{fontFamily:"'Playfair Display',serif", fontSize:'18px', fontWeight:'700', lineHeight:'1'}}>{n}</div>
+              <div style={{fontSize:'9px', fontWeight:'700', opacity:'.8', letterSpacing:'1px', textTransform:'uppercase', marginTop:'3px'}}>{l}</div>
             </div>
           ))}
         </div>
@@ -58,22 +57,24 @@ export default function AcademicsPage() {
 
       {/* MAIN */}
       <div style={{background:'var(--bg)', minHeight:'60vh'}}>
-        <div style={{maxWidth:'1280px', margin:'0 auto', padding:'60px 20px'}}>
+        <div style={{maxWidth:'1280px', margin:'0 auto', padding:'32px 14px'}}>
 
           {/* Tab switcher */}
-          <div className="rv" style={{display:'flex', gap:'6px', background:'var(--bg2)', padding:'6px', borderRadius:'16px', border:'1.5px solid var(--brd)', marginBottom:'44px', flexWrap:'wrap'}}>
+          <div style={{display:'flex', gap:'5px', background:'var(--bg2)', padding:'5px', borderRadius:'14px', border:'1.5px solid var(--brd)', marginBottom:'28px'}}>
             {TABS.map(t => (
               <button key={t.id} onClick={() => setActiveTab(t.id)} style={{
-                flex:1, minWidth:'150px', padding:'13px 16px',
-                borderRadius:'12px', border:'none', cursor:'pointer',
-                fontFamily:"'DM Sans',sans-serif", fontSize:'14px', fontWeight:'700',
+                flex:1, padding:'10px 4px',
+                borderRadius:'10px', border:'none', cursor:'pointer',
+                fontFamily:"'DM Sans',sans-serif", fontWeight:'700',
                 transition:'all .28s cubic-bezier(.34,1.56,.64,1)',
                 background: activeTab===t.id ? 'var(--card)' : 'transparent',
                 color: activeTab===t.id ? 'var(--or)' : 'var(--txt2)',
                 boxShadow: activeTab===t.id ? '0 4px 20px var(--shd)' : 'none',
                 transform: activeTab===t.id ? 'scale(1.02)' : 'scale(1)',
+                fontSize:'clamp(11px,2.5vw,14px)',
+                whiteSpace:'nowrap',
               }}>
-                {t.label}
+                {t.short}
               </button>
             ))}
           </div>
