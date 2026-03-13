@@ -4,8 +4,6 @@ import SchoolLogo from './SchoolLogo'
 export default function Footer() {
   return (
     <footer>
-      {/* ── Animated BG objects ── */}
-
       <div className="foot-grid">
         {/* Brand */}
         <div>
@@ -26,6 +24,8 @@ export default function Footer() {
             <a className="fsoc" href="#" aria-label="Instagram">In</a>
             <a className="fsoc" href="https://wa.me/919198783830" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">W</a>
           </div>
+
+          {/* Welltechup branding */}
           <a href="https://www.welltechup.com" target="_blank" rel="noopener noreferrer"
             style={{marginTop:'20px',display:'flex',alignItems:'center',gap:'10px',padding:'10px 14px',borderRadius:'12px',background:'rgba(108,63,197,.12)',border:'1px solid rgba(108,63,197,.25)',textDecoration:'none',transition:'all .25s',width:'fit-content'}}
             onMouseEnter={function(e){e.currentTarget.style.background='rgba(108,63,197,.22)';e.currentTarget.style.borderColor='rgba(155,89,245,.5)';e.currentTarget.style.transform='translateY(-2px)'}}
@@ -33,7 +33,7 @@ export default function Footer() {
             <div style={{width:'32px',height:'32px',borderRadius:'8px',background:'linear-gradient(135deg,#6C3FC5,#9B59F5)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'14px',fontWeight:'900',color:'#fff',flexShrink:0,boxShadow:'0 4px 12px rgba(108,63,197,.4)'}}>W</div>
             <div>
               <div style={{fontSize:'10px',fontWeight:'700',color:'rgba(255,255,255,.5)',letterSpacing:'1px',textTransform:'uppercase',marginBottom:'2px'}}>Designed &amp; Developed by</div>
-              <div style={{fontSize:'13px',fontWeight:'800',color:'#B57BFF',letterSpacing:'.3px'}}>WellTechUp IT <span style={{fontSize:'10px',color:'rgba(155,89,245,.6)'}}>↗</span></div>
+              <div style={{fontFamily:"'Playfair Display',serif",fontSize:'15px',fontWeight:'700',background:'linear-gradient(135deg,#B57BFF,#9B59F5)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text',letterSpacing:'.4px'}}>Welltechup <span style={{fontSize:'10px',WebkitTextFillColor:'rgba(155,89,245,.6)'}}>↗</span></div>
             </div>
           </a>
         </div>
@@ -105,6 +105,68 @@ export default function Footer() {
           <Link to="/admin">Admin</Link>
         </div>
       </div>
+
+      <style>{`
+        .foot-bot {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+          padding: 16px 32px;
+          border-top: 1px solid rgba(255,255,255,.08);
+        }
+        .foot-copy {
+          font-size: 12px;
+          color: rgba(255,255,255,.45);
+          font-family: 'DM Sans', sans-serif;
+          line-height: 1.6;
+        }
+        .foot-bl {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px 16px;
+          align-items: center;
+        }
+        .foot-bl a {
+          font-size: 12px;
+          color: rgba(255,255,255,.45);
+          text-decoration: none;
+          font-family: 'DM Sans', sans-serif;
+          transition: color .2s;
+          white-space: nowrap;
+        }
+        .foot-bl a:hover { color: #E8761A; }
+
+        @media (max-width: 640px) {
+          .foot-bot {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 16px 18px;
+            gap: 14px;
+          }
+          .foot-copy {
+            font-size: 11.5px;
+            line-height: 1.75;
+            color: rgba(255,255,255,.5);
+          }
+          .foot-bl {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 16px;
+            width: 100%;
+          }
+          .foot-bl a {
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.08);
+            text-align: center;
+            color: rgba(255,255,255,.55);
+          }
+        }
+      `}</style>
     </footer>
   )
 }

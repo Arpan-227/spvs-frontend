@@ -57,6 +57,7 @@ const ANNOUNCEMENTS = [
   '🎓 1410+ Students · 73 Classrooms · 8 Labs',
 ]
 
+/* ── Desktop dropdown panel ── */
 function DropPanel({ items, onClose }) {
   return (
     <div style={{position:'absolute',top:'calc(100% + 14px)',left:'50%',transform:'translateX(-50%)',background:'#ffffff',border:'1.5px solid rgba(232,118,26,.15)',borderRadius:'20px',boxShadow:'0 28px 70px rgba(232,118,26,.18),0 6px 24px rgba(0,0,0,.07)',padding:'10px',minWidth:'290px',zIndex:500,animation:'dropIn 0.28s cubic-bezier(.34,1.56,.64,1) both'}}>
@@ -81,6 +82,7 @@ function DropPanel({ items, onClose }) {
   )
 }
 
+/* ── Desktop nav item ── */
 function NavItem({ to, label, dropdown, isActive, onClose }) {
   const [open, setOpen] = useState(false)
   const timerRef = useRef()
@@ -110,52 +112,104 @@ function NavItem({ to, label, dropdown, isActive, onClose }) {
   )
 }
 
-const MOBILE_MENU = [
-  { section:'Main', links:[
-    { to:'/',             emoji:'🏠', label:'Home' },
-    { to:'/about',        emoji:'🏛️', label:'About School' },
-    { to:'/academics',    emoji:'📚', label:'Academics' },
-    { to:'/facilities',   emoji:'🏗️', label:'Facilities' },
-    { to:'/gallery',      emoji:'🖼️', label:'Gallery' },
-    { to:'/blog',         emoji:'📝', label:'Blogs & News' },
-    { to:'/campus-life',  emoji:'🎭', label:'Campus Life' },
-    { to:'/downloads',    emoji:'📜', label:'Certificates' },
-    { to:'/alumni',       emoji:'🎓', label:'Alumni' },
-    { to:'/contact',      emoji:'📞', label:'Contact Us' },
-  ]},
-  { section:'About', links:[
-    { to:'/about#history',     emoji:'📖', label:'School History' },
-    { to:'/about#vision',      emoji:'🎯', label:'Vision & Mission' },
-    { to:'/about#principal',   emoji:'👩‍🏫', label:"Principal's Message" },
-    { to:'/academics/faculty', emoji:'👨‍🏫', label:'Faculty & Staff' },
-    { to:'/why-choose-us',     emoji:'⭐', label:'Why Choose Us' },
-  ]},
-  { section:'Academics', links:[
-    { to:'/academics',            emoji:'🏫', label:'All Classes (PG–XII)' },
-    { to:'/academics#science',    emoji:'⚗️', label:'Science Stream' },
-    { to:'/academics#commerce',   emoji:'💼', label:'Commerce Stream' },
-    { to:'/academics#humanities', emoji:'🌐', label:'Humanities Stream' },
-    { to:'/academics/fees',       emoji:'💰', label:'Fee Structure' },
-  ]},
-  { section:'Facilities', links:[
-    { to:'/facilities#hostel',     emoji:'🏠', label:'Hostel' },
-    { to:'/facilities#labs',       emoji:'🔬', label:'Science Labs' },
-    { to:'/facilities#library',    emoji:'📖', label:'Library' },
-    { to:'/facilities#smartclass', emoji:'🖥️', label:'Smart Classrooms' },
-    { to:'/facilities#transport',  emoji:'🚌', label:'Transport' },
-    { to:'/facilities#sports',     emoji:'⚽', label:'Sports Ground' },
-  ]},
-  { section:'Quick Links', links:[
-    { to:'/mandatory-disclosure', emoji:'📋', label:'Mandatory Disclosure' },
-    { to:'/campus-life?tab=jobs', emoji:'💼', label:'Jobs & Careers' },
-    { to:'/admin',                emoji:'🔐', label:'Admin Login' },
-  ]},
+/* ── Mobile nav items config ── */
+const MOB_NAV = [
+  { to:'/',             emoji:'🏠', label:'Home' },
+  {
+    emoji:'🏛️', label:'About Us', to:'/about',
+    sub:[
+      { to:'/about#history',    emoji:'📖', label:'School History' },
+      { to:'/about#vision',     emoji:'🎯', label:'Vision & Mission' },
+      { to:'/about#director',   emoji:'👔',  label:"Director's Message" },
+      { to:'/about#principal',  emoji:'👩‍🏫', label:"Principal's Message" },
+      { to:'/academics/faculty',emoji:'👨‍🏫', label:'Faculty & Staff' },
+      { to:'/why-choose-us',    emoji:'⭐', label:'Why Choose Us' },
+    ]
+  },
+  {
+    emoji:'📚', label:'Academics', to:'/academics',
+    sub:[
+      { to:'/academics#science',    emoji:'⚗️', label:'Science Stream' },
+      { to:'/academics#commerce',   emoji:'💼', label:'Commerce Stream' },
+      { to:'/academics#humanities', emoji:'🌐', label:'Humanities Stream' },
+      { to:'/academics/fees',       emoji:'💰', label:'Fee Structure' },
+      { to:'/academics/faculty',    emoji:'👨‍🏫', label:'Faculty & Staff' },
+    ]
+  },
+  {
+    emoji:'🏗️', label:'Facilities', to:'/facilities',
+    sub:[
+      { to:'/facilities#hostel',     emoji:'🏠', label:'Hostel' },
+      { to:'/facilities#labs',       emoji:'🔬', label:'Science Labs' },
+      { to:'/facilities#library',    emoji:'📖', label:'Library' },
+      { to:'/facilities#smartclass', emoji:'🖥️', label:'Smart Classrooms' },
+      { to:'/facilities#transport',  emoji:'🚌', label:'Transport' },
+      { to:'/facilities#sports',     emoji:'⚽', label:'Sports Ground' },
+    ]
+  },
+  { to:'/gallery',                emoji:'🖼️', label:'Gallery' },
+  { to:'/campus-life?tab=jobs',   emoji:'💼', label:'Jobs & Careers' },
+  { to:'/blog',                   emoji:'📝', label:'Blog & News' },
+  { to:'/campus-life',            emoji:'🎭', label:'Campus Life' },
+  { to:'/downloads',              emoji:'📜', label:'Certificates' },
+  { to:'/alumni',                 emoji:'🎓', label:'Alumni' },
+  { to:'/contact',                emoji:'📞', label:'Contact Us' },
+  { to:'/mandatory-disclosure',   emoji:'📋', label:'Mandatory Disclosure' },
 ]
+
+/* ── Single mobile nav row ── */
+function MobNavRow({ item, isActive, onClose }) {
+  var [open, setOpen] = useState(false)
+  var hasSub = item.sub && item.sub.length > 0
+
+  return (
+    <div>
+      {/* Main row */}
+      <div style={{display:'flex', alignItems:'center', borderRadius:'12px', marginBottom:'3px', overflow:'hidden', background: isActive(item.to) ? 'rgba(232,118,26,.08)' : 'transparent', transition:'background .15s'}}>
+        {/* Link part */}
+        <Link to={item.to} onClick={onClose}
+          style={{flex:1, display:'flex', alignItems:'center', gap:'12px', padding:'11px 14px', textDecoration:'none', fontFamily:"'DM Sans',sans-serif", fontSize:'15px', fontWeight:600, color: isActive(item.to) ? '#E8761A' : '#2C1500'}}
+        >
+          <span style={{width:'36px', height:'36px', borderRadius:'10px', background: isActive(item.to) ? 'rgba(232,118,26,.15)' : 'rgba(232,118,26,.07)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'18px', flexShrink:0}}>{item.emoji}</span>
+          {item.label}
+          {isActive(item.to) && <span style={{marginLeft:'auto', width:'6px', height:'6px', borderRadius:'50%', background:'#E8761A', flexShrink:0}} />}
+        </Link>
+        {/* + toggle if has sub */}
+        {hasSub && (
+          <button onClick={function(){ setOpen(function(o){ return !o }) }}
+            style={{width:'44px', height:'100%', minHeight:'48px', border:'none', background:'transparent', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, borderLeft:'1px solid rgba(232,118,26,.1)', transition:'background .15s'}}
+            onMouseEnter={function(e){ e.currentTarget.style.background='rgba(232,118,26,.06)' }}
+            onMouseLeave={function(e){ e.currentTarget.style.background='transparent' }}
+          >
+            <span style={{fontSize:'20px', fontWeight:'300', color: open ? '#E8761A' : '#B87832', lineHeight:1, transition:'transform .25s, color .2s', display:'block', transform: open ? 'rotate(45deg)' : 'rotate(0deg)'}}>+</span>
+          </button>
+        )}
+      </div>
+
+      {/* Sub-links accordion */}
+      {hasSub && open && (
+        <div style={{marginLeft:'16px', marginBottom:'4px', borderLeft:'2px solid rgba(232,118,26,.18)', paddingLeft:'12px'}}>
+          {item.sub.map(function(s) {
+            return (
+              <Link key={s.to} to={s.to} onClick={onClose}
+                style={{display:'flex', alignItems:'center', gap:'10px', padding:'9px 12px', borderRadius:'10px', marginBottom:'2px', textDecoration:'none', fontFamily:"'DM Sans',sans-serif", fontSize:'13.5px', fontWeight:600, color: isActive(s.to) ? '#E8761A' : '#4A2C00', background: isActive(s.to) ? 'rgba(232,118,26,.08)' : 'transparent', transition:'all .15s'}}
+                onMouseEnter={function(e){ e.currentTarget.style.background='rgba(232,118,26,.06)'; e.currentTarget.style.paddingLeft='16px' }}
+                onMouseLeave={function(e){ e.currentTarget.style.background=isActive(s.to)?'rgba(232,118,26,.08)':'transparent'; e.currentTarget.style.paddingLeft='12px' }}
+              >
+                <span style={{fontSize:'15px'}}>{s.emoji}</span>
+                {s.label}
+              </Link>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobile] = useState(false)
-  const [expanded, setExpanded] = useState('Main')
   const location = useLocation()
 
   useEffect(() => {
@@ -164,9 +218,9 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  useEffect(() => { setMobile(false); setExpanded('Main') }, [location])
+  useEffect(() => { setMobile(false) }, [location])
 
-  const isActive = (to) => to === '/' ? location.pathname === '/' : location.pathname.startsWith(to.split('#')[0])
+  const isActive = (to) => to === '/' ? location.pathname === '/' : location.pathname.startsWith(to.split('#')[0].split('?')[0])
 
   const NAV = [
     { to:'/',           label:'Home' },
@@ -182,12 +236,9 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ══════════════════════════════════════
-          TOPBAR
-      ══════════════════════════════════════ */}
+      {/* ── TOPBAR ── */}
       <div style={{background:'linear-gradient(90deg,#1C0A00,#3D1A00)',position:'relative',zIndex:100}}>
-
-        {/* Desktop topbar — phone | email | marquee | social */}
+        {/* Desktop */}
         <div className="tb-inner tb-desktop">
           <div className="tb-contacts">
             <span className="tb-c">📞 <span style={{color:'#FFCF40'}}>+91 9198783830</span></span>
@@ -203,20 +254,18 @@ export default function Navbar() {
           </div>
           <div className="tb-social">
             {[['f','#'],['▶','#'],['in','#']].map(([l,h]) => (
-              <a key={l} href={h}
-                style={{width:'24px',height:'24px',borderRadius:'5px',background:'rgba(255,255,255,.1)',display:'flex',alignItems:'center',justifyContent:'center',color:'rgba(255,255,255,.7)',fontSize:'11px',fontWeight:700,textDecoration:'none',transition:'all .2s',fontFamily:"'DM Sans',sans-serif"}}
+              <a key={l} href={h} style={{width:'24px',height:'24px',borderRadius:'5px',background:'rgba(255,255,255,.1)',display:'flex',alignItems:'center',justifyContent:'center',color:'rgba(255,255,255,.7)',fontSize:'11px',fontWeight:700,textDecoration:'none',transition:'all .2s',fontFamily:"'DM Sans',sans-serif"}}
                 onMouseEnter={e=>{e.currentTarget.style.background='#E8761A';e.currentTarget.style.color='#fff'}}
                 onMouseLeave={e=>{e.currentTarget.style.background='rgba(255,255,255,.1)';e.currentTarget.style.color='rgba(255,255,255,.7)'}}
               >{l}</a>
             ))}
           </div>
         </div>
-
-        {/* Mobile topbar — [f ▶ in] | sliding announcements */}
+        {/* Mobile */}
         <div className="tb-mobile">
           <div className="tb-mob-social">
-            {[['f','#','Facebook'],['▶','#','YouTube'],['in','#','LinkedIn']].map(([l,h,title]) => (
-              <a key={l} href={h} title={title} className="tb-mob-soc-btn">{l}</a>
+            {[['f','#'],['▶','#'],['in','#']].map(([l,h]) => (
+              <a key={l} href={h} className="tb-mob-soc-btn">{l}</a>
             ))}
           </div>
           <div className="tb-mob-divider"/>
@@ -228,19 +277,14 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-
       </div>
 
-      {/* ══════════════════════════════════════
-          STICKY HEADER
-      ══════════════════════════════════════ */}
+      {/* ── STICKY HEADER ── */}
       <header style={{position:'sticky',top:0,zIndex:200,background:'rgba(255,253,248,.97)',backdropFilter:'blur(20px)',WebkitBackdropFilter:'blur(20px)',borderBottom:'1px solid rgba(232,118,26,.13)',boxShadow:scrolled?'0 4px 40px rgba(232,118,26,.18)':'0 2px 16px rgba(232,118,26,.06)',transition:'all .3s'}}>
         <div style={{maxWidth:'1280px',margin:'0 auto',padding:'0 20px',display:'flex',alignItems:'center',gap:'16px',height:'76px'}}>
-
           {/* Logo */}
           <Link to="/" style={{display:'flex',alignItems:'center',gap:'13px',flexShrink:0,textDecoration:'none'}}>
-            <div
-              style={{width:'62px',height:'62px',borderRadius:'50%',overflow:'hidden',border:'2.5px solid rgba(245,184,0,.4)',boxShadow:'0 4px 18px rgba(245,184,0,.22)',background:'#FFF8DC',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,transition:'all .5s cubic-bezier(.34,1.56,.64,1)'}}
+            <div style={{width:'62px',height:'62px',borderRadius:'50%',overflow:'hidden',border:'2.5px solid rgba(245,184,0,.4)',boxShadow:'0 4px 18px rgba(245,184,0,.22)',background:'#FFF8DC',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,transition:'all .5s cubic-bezier(.34,1.56,.64,1)'}}
               onMouseEnter={e=>{e.currentTarget.style.transform='rotate(8deg) scale(1.06)';e.currentTarget.style.borderColor='#F5B800'}}
               onMouseLeave={e=>{e.currentTarget.style.transform='';e.currentTarget.style.borderColor='rgba(245,184,0,.4)'}}
             ><SchoolLogo size={58}/></div>
@@ -264,95 +308,59 @@ export default function Navbar() {
             </div>
           </nav>
 
-          {/* Hamburger button */}
-          <button
-            onClick={() => setMobile(true)}
-            className="spvs-hamburger"
-            style={{display:'none',flexDirection:'column',gap:'5px',background:'none',border:'none',cursor:'pointer',padding:'6px',marginLeft:'auto'}}
-          >
+          {/* Hamburger */}
+          <button onClick={() => setMobile(true)} className="spvs-hamburger"
+            style={{display:'none',flexDirection:'column',gap:'5px',background:'none',border:'none',cursor:'pointer',padding:'6px',marginLeft:'auto'}}>
             {[0,1,2].map(i => <span key={i} style={{width:'24px',height:'2.5px',background:'#E8761A',borderRadius:'3px',display:'block'}}/>)}
           </button>
-
         </div>
       </header>
 
       {/* ══════════════════════════════════════
-          MOBILE FULL-SCREEN MENU
+          MOBILE MENU — new design
       ══════════════════════════════════════ */}
       {mobileOpen && (
-        <div style={{position:'fixed',inset:0,zIndex:1000,background:'#FFFDF8',display:'flex',flexDirection:'column',overflowY:'auto'}}>
+        <div style={{position:'fixed',inset:0,zIndex:1000,background:'#FFFDF8',display:'flex',flexDirection:'column',overflowY:'hidden'}}>
 
-          {/* Top bar */}
-          <div style={{position:'sticky',top:0,zIndex:10,background:'rgba(255,253,248,.97)',backdropFilter:'blur(20px)',borderBottom:'1.5px solid rgba(232,118,26,.12)',padding:'14px 16px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-            <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
-              <div style={{width:'40px',height:'40px',borderRadius:'50%',overflow:'hidden',border:'2px solid rgba(245,184,0,.4)',background:'#FFF8DC',flexShrink:0}}><SchoolLogo size={38}/></div>
-              <div>
-                <div style={{fontFamily:"'Playfair Display',serif",fontSize:'14px',fontWeight:700,color:'#C45F0A'}}>Sant Pathik Vidyalaya</div>
-                <div style={{fontSize:'10px',color:'#B87832',fontFamily:"'DM Sans',sans-serif"}}>CBSE · Est. 1987 · Bahraich</div>
-              </div>
+          {/* ── Top: Logo + Welcome + Close ── */}
+          <div style={{background:'linear-gradient(135deg,#1C0A00,#3D1A00)',padding:'18px 16px',display:'flex',alignItems:'center',gap:'13px',flexShrink:0}}>
+            <div style={{width:'52px',height:'52px',borderRadius:'50%',overflow:'hidden',border:'2.5px solid rgba(245,184,0,.5)',background:'#FFF8DC',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <SchoolLogo size={48}/>
             </div>
-            <button onClick={() => setMobile(false)} style={{background:'rgba(232,118,26,.1)',border:'1.5px solid rgba(232,118,26,.2)',borderRadius:'10px',padding:'8px 14px',fontSize:'14px',fontWeight:700,cursor:'pointer',color:'#7A4010',fontFamily:"'DM Sans',sans-serif",display:'flex',alignItems:'center',gap:'6px'}}>
-              ✕ Close
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:'10px',fontWeight:'700',color:'rgba(255,210,130,.6)',letterSpacing:'1.2px',textTransform:'uppercase',fontFamily:"'DM Sans',sans-serif",marginBottom:'2px'}}>Welcome to</div>
+              <div style={{fontFamily:"'Playfair Display',serif",fontSize:'15px',fontWeight:'700',color:'#FFCF40',lineHeight:1.25}}>Sant Pathik Vidyalaya</div>
+              <div style={{fontSize:'10px',color:'rgba(255,210,130,.5)',fontFamily:"'DM Sans',sans-serif",marginTop:'2px'}}>CBSE Affiliated · Est. 1987 · Bahraich</div>
+            </div>
+            <button onClick={() => setMobile(false)}
+              style={{width:'36px',height:'36px',borderRadius:'10px',border:'1.5px solid rgba(255,255,255,.15)',background:'rgba(255,255,255,.08)',cursor:'pointer',fontSize:'16px',display:'flex',alignItems:'center',justifyContent:'center',color:'rgba(255,255,255,.8)',flexShrink:0}}>
+              ✕
             </button>
           </div>
 
-          {/* Enroll CTA */}
-          <div style={{padding:'14px 16px',background:'linear-gradient(135deg,rgba(232,118,26,.06),rgba(245,184,0,.04))',borderBottom:'1px solid rgba(232,118,26,.1)'}}>
-            <Link to="/contact" onClick={() => setMobile(false)} style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'10px',padding:'14px 20px',background:'linear-gradient(135deg,#E8761A,#C45F0A)',color:'#fff',borderRadius:'14px',fontFamily:"'DM Sans',sans-serif",fontSize:'15px',fontWeight:800,textDecoration:'none',boxShadow:'0 8px 28px rgba(232,118,26,.4)'}}>
-              📋 Enroll Now
-              <span style={{background:'rgba(255,255,255,.22)',fontSize:'10px',padding:'2px 8px',borderRadius:'50px',fontWeight:900,letterSpacing:'1px'}}>OPEN</span>
-            </Link>
+
+
+          {/* ── Scrollable nav list ── */}
+          <div style={{flex:1,overflowY:'auto',padding:'10px 14px 20px'}}>
+            {MOB_NAV.map(function(item) {
+              return <MobNavRow key={item.to} item={item} isActive={isActive} onClose={function(){ setMobile(false) }} />
+            })}
           </div>
 
-          {/* Section tabs */}
-          <div style={{padding:'12px 16px 0',display:'flex',gap:'6px',flexWrap:'wrap',borderBottom:'1px solid rgba(232,118,26,.1)'}}>
-            {MOBILE_MENU.map(({ section }) => (
-              <button key={section} onClick={() => setExpanded(section)} style={{padding:'6px 14px',borderRadius:'50px',fontFamily:"'DM Sans',sans-serif",fontSize:'12px',fontWeight:700,cursor:'pointer',transition:'all .2s',marginBottom:'10px',background:expanded===section?'#E8761A':'transparent',color:expanded===section?'#fff':'#7A4010',border:expanded===section?'1.5px solid #E8761A':'1.5px solid rgba(232,118,26,.2)'}}>
-                {section}
-              </button>
-            ))}
-          </div>
-
-          {/* Nav links */}
-          <div style={{padding:'12px 16px',flex:1}}>
-            {MOBILE_MENU.filter(m => m.section === expanded).map(({ section, links }) => (
-              <div key={section}>
-                {links.map(({ to, emoji, label }) => (
-                  <Link key={to} to={to} onClick={() => setMobile(false)}
-                    style={{display:'flex',alignItems:'center',gap:'12px',padding:'12px 14px',borderRadius:'12px',marginBottom:'4px',textDecoration:'none',fontFamily:"'DM Sans',sans-serif",fontSize:'15px',fontWeight:600,color:isActive(to)?'#E8761A':'#2C1500',background:isActive(to)?'rgba(232,118,26,.08)':'transparent',transition:'all .18s'}}
-                    onMouseEnter={e=>{e.currentTarget.style.background='rgba(232,118,26,.06)';e.currentTarget.style.paddingLeft='18px'}}
-                    onMouseLeave={e=>{e.currentTarget.style.background=isActive(to)?'rgba(232,118,26,.08)':'transparent';e.currentTarget.style.paddingLeft='14px'}}
-                  >
-                    <span style={{width:'36px',height:'36px',borderRadius:'10px',background:isActive(to)?'rgba(232,118,26,.15)':'rgba(232,118,26,.07)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'18px',flexShrink:0}}>{emoji}</span>
-                    {label}
-                    {isActive(to) && <span style={{marginLeft:'auto',width:'6px',height:'6px',borderRadius:'50%',background:'#E8761A'}}/>}
-                  </Link>
-                ))}
-              </div>
-            ))}
-          </div>
-
-          {/* Contact info + Well TechUp branding */}
-          <div style={{padding:'16px',borderTop:'1.5px solid rgba(232,118,26,.12)',background:'rgba(232,118,26,.03)'}}>
-            <div style={{display:'flex',flexDirection:'column',gap:'8px',marginBottom:'16px'}}>
-              <a href="tel:+919198783830" style={{display:'flex',alignItems:'center',gap:'10px',color:'#7A4010',textDecoration:'none',fontSize:'13px',fontWeight:600}}>
-                <span style={{fontSize:'16px'}}>📞</span> +91 9198783830
+          {/* ── Footer: contact + branding ── */}
+          <div style={{padding:'14px 16px',borderTop:'1.5px solid rgba(232,118,26,.12)',background:'rgba(232,118,26,.03)',flexShrink:0}}>
+            <div style={{display:'flex',gap:'12px',marginBottom:'12px',flexWrap:'wrap'}}>
+              <a href="tel:+919198783830" style={{display:'inline-flex',alignItems:'center',gap:'6px',color:'#7A4010',textDecoration:'none',fontSize:'13px',fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>
+                📞 +91 9198783830
               </a>
-              <a href="mailto:spvbrh@gmail.com" style={{display:'flex',alignItems:'center',gap:'10px',color:'#7A4010',textDecoration:'none',fontSize:'13px',fontWeight:600}}>
-                <span style={{fontSize:'16px'}}>✉️</span> spvbrh@gmail.com
+              <a href="mailto:spvbrh@gmail.com" style={{display:'inline-flex',alignItems:'center',gap:'6px',color:'#7A4010',textDecoration:'none',fontSize:'13px',fontWeight:600,fontFamily:"'DM Sans',sans-serif"}}>
+                ✉️ spvbrh@gmail.com
               </a>
-              <div style={{display:'flex',alignItems:'center',gap:'10px',color:'#B87832',fontSize:'12px'}}>
-                <span style={{fontSize:'16px'}}>📍</span> Pashupati Nagar, Bahraich UP 271802
-              </div>
             </div>
-            <div style={{borderTop:'1px solid rgba(232,118,26,.12)',paddingTop:'14px',textAlign:'center'}}>
-              <div style={{fontSize:'10px',color:'#B87832',fontFamily:"'DM Sans',sans-serif",fontWeight:600,letterSpacing:'0.5px',marginBottom:'6px',textTransform:'uppercase'}}>Website by</div>
-              <div style={{display:'inline-flex',alignItems:'center',gap:'8px',background:'linear-gradient(135deg,#0F1B3D,#1a2d5a)',borderRadius:'10px',padding:'8px 16px',boxShadow:'0 4px 14px rgba(15,27,61,.2)'}}>
-                <div style={{width:'22px',height:'22px',borderRadius:'6px',background:'linear-gradient(135deg,#E8761A,#F5B800)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px',fontWeight:900,color:'#fff',fontFamily:"'DM Sans',sans-serif"}}>W</div>
-                <div>
-                  <div style={{fontSize:'12px',fontWeight:800,color:'#fff',fontFamily:"'DM Sans',sans-serif",letterSpacing:'0.3px'}}>Well TechUp</div>
-                  <div style={{fontSize:'9px',color:'rgba(255,255,255,.5)',fontFamily:"'DM Sans',sans-serif"}}>Digital Solutions</div>
-                </div>
+            <div style={{textAlign:'center'}}>
+              <div style={{fontSize:'9.5px',color:'#B87832',fontFamily:"'DM Sans',sans-serif",fontWeight:600,letterSpacing:'1.5px',marginBottom:'7px',textTransform:'uppercase'}}>Powered by</div>
+              <div style={{display:'inline-block'}}>
+                <span style={{fontFamily:"'Playfair Display',serif",fontSize:'18px',fontWeight:700,background:'linear-gradient(135deg,#0F1B3D,#1a6bbf,#0F1B3D)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text',letterSpacing:'.5px'}}>Welltechup</span>
               </div>
             </div>
           </div>
@@ -360,9 +368,7 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* ══════════════════════════════════════
-          STYLES
-      ══════════════════════════════════════ */}
+      {/* ── STYLES ── */}
       <style>{`
         @keyframes tbmq    { from{transform:translateX(0)} to{transform:translateX(-50%)} }
         @keyframes tbmqmob { from{transform:translateX(0)} to{transform:translateX(-50%)} }
@@ -370,7 +376,6 @@ export default function Navbar() {
         @keyframes ctaRing { 0%,100%{transform:scale(1);opacity:.6} 50%{transform:scale(1.08);opacity:1} }
         @keyframes ctaShine{ 0%{left:-60%} 100%{left:130%} }
 
-        /* Desktop topbar */
         .tb-inner    { max-width:1280px; margin:0 auto; padding:7px 20px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
         .tb-contacts { display:flex; gap:16px; flex-wrap:wrap; }
         .tb-c        { display:flex; align-items:center; gap:5px; font-size:12px; color:rgba(255,255,255,.6); font-family:'DM Sans',sans-serif; }
@@ -378,44 +383,27 @@ export default function Navbar() {
         .tb-mq-track { display:inline-block; white-space:nowrap; animation:tbmq 30s linear infinite; }
         .tb-social   { display:flex; gap:6px; }
 
-        /* Show/hide */
-        .tb-desktop  { display:flex; }
-        .tb-mobile   { display:none; }
+        .tb-desktop { display:flex; }
+        .tb-mobile  { display:none; }
 
-        /* Mobile topbar pieces */
         .tb-mob-social   { display:flex; align-items:center; gap:6px; padding:0 10px; flex-shrink:0; }
-        .tb-mob-soc-btn  {
-          width:26px; height:26px; border-radius:6px;
-          background:rgba(255,255,255,.12);
-          display:flex; align-items:center; justify-content:center;
-          color:rgba(255,255,255,.8); font-size:11px; font-weight:700;
-          text-decoration:none; font-family:'DM Sans',sans-serif;
-        }
+        .tb-mob-soc-btn  { width:26px; height:26px; border-radius:6px; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.8); font-size:11px; font-weight:700; text-decoration:none; font-family:'DM Sans',sans-serif; }
         .tb-mob-divider  { width:1px; height:18px; background:rgba(255,255,255,.2); flex-shrink:0; }
         .tb-mob-mq-wrap  { flex:1; overflow:hidden; min-width:0; padding:0 8px; }
         .tb-mob-mq-track { display:inline-block; white-space:nowrap; animation:tbmqmob 25s linear infinite; }
 
-        /* CTA button */
         .cta-pulse-ring { position:absolute; inset:-4px; border-radius:15px; background:linear-gradient(135deg,#E8761A,#F5B800,#FF9A3C); animation:ctaRing 2.4s ease-in-out infinite; z-index:0; }
         .spvs-cta-btn   { position:relative; z-index:1; overflow:hidden; display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,#E8761A,#C45F0A); color:#fff !important; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:800; padding:11px 20px; border-radius:12px; text-decoration:none; white-space:nowrap; box-shadow:0 6px 24px rgba(232,118,26,.5); transition:all .25s; }
         .spvs-cta-btn:hover { transform:translateY(-3px) scale(1.03); box-shadow:0 12px 36px rgba(232,118,26,.6); }
         .spvs-cta-btn::after { content:''; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent); transform:skewX(-20deg); animation:ctaShine 3s ease-in-out infinite; }
 
-        /* Breakpoints */
         @media (max-width:960px) {
           .spvs-dnav      { display:none !important; }
           .spvs-hamburger { display:flex !important; }
         }
-
         @media (max-width:768px) {
           .tb-desktop { display:none !important; }
-          .tb-mobile  {
-            display:flex !important;
-            align-items:center;
-            width:100%;
-            height:40px;
-            overflow:hidden;
-          }
+          .tb-mobile  { display:flex !important; align-items:center; width:100%; height:40px; overflow:hidden; }
         }
       `}</style>
     </>
